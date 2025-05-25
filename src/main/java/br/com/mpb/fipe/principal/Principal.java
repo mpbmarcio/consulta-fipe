@@ -4,6 +4,7 @@ import br.com.mpb.fipe.model.*;
 import br.com.mpb.fipe.service.ConsumoApi;
 import br.com.mpb.fipe.service.ConverteDados;
 
+import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
 
@@ -22,8 +23,7 @@ public class Principal {
 
         do {
             desenharJanela();
-            seta();
-            opcao = leitura.nextInt();
+            opcao = lerOpcaoComValidacao();
 
             if (opcao == 4) {
                 System.out.println("Obrigado por usar nossos sistemas!");
@@ -38,15 +38,13 @@ public class Principal {
             List<DadosMarca> dadosMarca = converteDados.obterDadosArray(json, DadosMarca.class);
             exibeMarcas(dadosMarca);
 
-            seta();
-            modelo = leitura.nextInt();
+            modelo = lerModeloComValidacao(dadosMarca);
             json = consumoApi.obterDados(ENDERECO + "/" + tipoVeiculo + "/marcas/" + modelo + "/modelos");
             ModelosWrapper wrapper = converteDados.obterDados(json, ModelosWrapper.class);
-            List<DadosModelo> dadosModeloList = wrapper.getModelos();
-            exibeModelos(dadosModeloList);
+            List<DadosModelo> dadosModelo = wrapper.getModelos();
+            exibeModelos(dadosModelo);
 
-            seta();
-            veiculo = leitura.nextInt();
+            veiculo = lerDadosModeloComValidacao(dadosModelo);
             json = consumoApi.obterDados(ENDERECO + "/" + tipoVeiculo + "/marcas/" + modelo + "/modelos/" + veiculo + "/anos");
 
             List<AnosVeiculo> anosVeiculos = converteDados.obterDadosArray(json, AnosVeiculo.class);
@@ -55,6 +53,72 @@ public class Principal {
             System.out.println("\nDeseja realizar outra operação?");
 
         } while (opcao != 4);
+    }
+
+    public int lerOpcaoComValidacao() {
+        int valor;
+        while (true) {
+            try {
+                seta();
+                valor = leitura.nextInt();
+                leitura.nextLine();
+
+                if (valor < 1 || valor > 4) {
+                    System.out.println("Opção inválida! Por favor, digite uma opção entre (1 e 4).");
+                    continue;
+                }
+                return valor;
+            } catch (InputMismatchException e) {
+                System.out.println("Opção inválida! Por favor, digite uma opção entre (1 e 4).");
+                leitura.nextLine();
+            }
+        }
+    }
+
+    public int lerModeloComValidacao(List<DadosMarca> listaModelos) {
+        while (true) {
+            try {
+                seta();
+                int valorDigitado = leitura.nextInt();
+                leitura.nextLine();
+
+                boolean existe = listaModelos.stream()
+                        .anyMatch(modelo -> Integer.parseInt(modelo.getCodigo()) == valorDigitado);
+
+                if (!existe) {
+                    System.out.println("Código do modelo não encontrado! Por favor, insira um código válido.");
+                    continue;
+                }
+
+                return valorDigitado;
+            } catch (InputMismatchException e) {
+                System.out.println("Entrada inválida! Por favor, digite um código válido.");
+                leitura.nextLine();
+            }
+        }
+    }
+
+    public int lerDadosModeloComValidacao(List<DadosModelo> dadosModelo) {
+        while (true) {
+            try {
+                seta();
+                int valorDigitado = leitura.nextInt();
+                leitura.nextLine();
+
+                boolean existe = dadosModelo.stream()
+                        .anyMatch(modelo -> Integer.parseInt(modelo.getCodigo()) == valorDigitado);
+
+                if (!existe) {
+                    System.out.println("Código do veículo não encontrado! Por favor, insira um código válido.");
+                    continue;
+                }
+
+                return valorDigitado;
+            } catch (InputMismatchException e) {
+                System.out.println("Entrada inválida! Por favor, digite um código válido.");
+                leitura.nextLine();
+            }
+        }
     }
 
     public static void desenharJanela() {
@@ -156,6 +220,6 @@ public class Principal {
     public void seta() {
         String RED = "\u001B[31m";
         String RESET = "\u001B[0m";
-        System.out.print(RED + "Digite o código ---> " + RESET);
+        System.out.print(RED + "Digite uma opção válida ---> " + RESET);
     }
 }
