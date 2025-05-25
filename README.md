@@ -8,6 +8,7 @@ Este projeto é um sistema de consulta de veículos que permite obter informaç�
 - **Listagem dinâmica**: O sistema exibe todas as marcas e modelos disponíveis.
 - **Exibição detalhada**: Mostra valores e referência FIPE para cada veículo.
 - **Loop contínuo**: O usuário pode realizar múltiplas buscas sem reiniciar o programa.
+- **Validação de entrada**: Proteção contra entradas inválidas, garantindo melhor interação do usuário.
 - **Interface textual otimizada**: Uso de tabelas e formatação para melhor leitura.
 
 ## 🛠️ Tecnologias Utilizadas
@@ -15,12 +16,12 @@ Este projeto é um sistema de consulta de veículos que permite obter informaç�
 - **Java 11+** – Linguagem de programação usada no sistema.
 - **IntelliJ IDEA** – Ambiente de desenvolvimento recomendado.
 - **API FIPE** – Fonte dos dados consultados sobre veículos.
-- **Manipulação de JSON** – Conversão de dados recebidos da API com a biblioteca **Jackson** para desserialização e serialização.
+- **Jackson (Manipulação de JSON)** – Biblioteca utilizada para converter objetos Java em JSON e vice-versa, facilitando a integração com APIs e processamento de dados.
 - **Scanner** – Entrada de dados interativa pelo terminal.
 - **Maven** – Gerenciador de dependências para facilitar o desenvolvimento.
 - **Listas (ArrayList)** – Estrutura de dados utilizada para armazenar e manipular os resultados da API.
 - **Consumo de API** – Comunicação com serviços web para buscar informações sobre marcas e modelos de veículos.
-- **Jackson** – Biblioteca para manipulação de JSON em Java, permitindo converter objetos Java para JSON e vice-versa, facilitando a integração com APIs e processamento de dados.
+- **Expressões Lambda e Streams** – Aplicadas para validar e filtrar valores corretamente.
 
 ---
 
